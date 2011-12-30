@@ -5,8 +5,12 @@ from django.db import models
 from django.utils.html import escape
 from django.db.models.query import QuerySet
 from django.utils.encoding import smart_str
+from django.conf import settings
 import collections
 
+
+#used to change pk by id, by convenience of developer
+PK_NAME_ENCODED = getattr(settings, 'PK_NAME_ENCODED', 'pk')
 
 class DefaultEncoder(object):
     _mapping = {
@@ -25,7 +29,7 @@ class DefaultEncoder(object):
             ret = {}
 
         ret.update(data['fields'])
-        ret['pk'] = data['pk']
+        ret[PK_NAME_ENCODED] = data['pk']
 
         for field, val in ret.iteritems():
             try:
